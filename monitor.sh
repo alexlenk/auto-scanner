@@ -42,6 +42,11 @@ while true; do
             # Started
             if [ "$last_files" == "" ]; then
                 echo "MONITOR: Resetting Last Files"
+                while [[ $i -lt 20 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
+                do
+                    sleep 0.5
+                    ((i++))
+                done
                 last_files=$(ls /volumes/SCANNER/DCIM/200DOC)
             fi
 
