@@ -42,12 +42,15 @@ while true; do
             # Started
             if [ "$last_files" == "" ]; then
                 echo "MONITOR: Resetting Last Files"
+                i=0
                 while [[ $i -lt 20 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
                 do
                     sleep 0.5
                     ((i++))
                 done
                 last_files=$(ls /volumes/SCANNER/DCIM/200DOC)
+                echo "MONITOR: Last Files Reset done"
+                echo "MONITOR: Waited for $i/2 seconds"
             fi
 
             if [ "$backlog_time" != "" ]; then  
@@ -58,12 +61,14 @@ while true; do
                 last_file=$pdffile
 
                 #TODO: if more than one, it should be a merging case, check merge variable
-                
+                i=0
                 while [[ $i -lt 20 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
                 do
                     sleep 0.5
                     ((i++))
                 done
+                echo "MONITOR: Waited for $i/2 seconds"
+
                 if [ -d /volumes/SCANNER/DCIM/200DOC ]; then
                     pdffile=`diff <(echo "$last_files") <(echo "$(ls /volumes/SCANNER/DCIM/200DOC)") | grep ">" | cut -c3-`
                     echo "MONITOR: New File in Folder: $pdffile"
