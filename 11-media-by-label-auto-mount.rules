@@ -18,6 +18,7 @@ ACTION=="add", ENV{mount_options}="rw,relatime"
 # Filesystem-specific mount options  
 ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs", ENV{mount_options}="%E{mount_options},utf8,gid=100,umask=002"  
 # Mount the device  
+ENV{dir_name}=="SCANNER", ENV{mount_options}="%E{mount_options},ro"
 ACTION=="add", RUN+="/usr/bin/systemd-mount -o %E{mount_options} /dev/%k /media/%E{dir_name}", RUN+="/bin/sh -c 'echo SCANNER CREATE,ISDIR > /tmp/scannerpipe'"
 # Clean up after removal  
 #ACTION=="remove", ENV{dir_name}!="", RUN+="/bin/umount -l /media/%E{dir_name}", RUN+="/bin/rmdir /media/%E{dir_name}"  
