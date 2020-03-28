@@ -7,6 +7,7 @@ merge=false
 time=$(date +%s)
 start=true
 
+echo "MONITOR: Starting ..."
 if [ -d "/volumes/SCANNER/DCIM/200DOC" ]; then
     last_files=$(ls /volumes/SCANNER/DCIM/200DOC)
 fi
@@ -16,13 +17,11 @@ pipe=/tmp/scannerpipe
 trap "rm -f $pipe" EXIT
 
 if [[ ! -p $pipe ]]; then
+    echo "MONITOR: Creating pipe: $pipe"
     mkfifo $pipe
 fi
 
-#inotifywait -m /volumes/ -e create -e moved_to -e delete | 
-#while read dir action file; do
 while true; do
-    #if [ "$file" = "SCANNER" -o "$file" = "6462-3834" ]; then 
     if read file action <$pipe; then
         time=$(date +%s)
         ((time_diff=time-last_time))
@@ -43,6 +42,7 @@ while true; do
                 last_file=$pdffile
 
                 #TODO: if more than one, it should be a merging case, check merge variable
+                sleep 2
                 if [ -d /volumes/SCANNER/DCIM/200DOC ]; then
                     pdffile=`diff <(echo "$last_files") <(echo "$(ls /volumes/SCANNER/DCIM/200DOC)") | grep ">" | cut -c3-`
                     echo "MONITOR: New File in Folder: $pdffile"
