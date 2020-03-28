@@ -18,7 +18,7 @@ if [ -d /home/pi/auto-scanner ]; then
     cd /home/pi/auto-scanner
     git pull
     chown -R pi:pi ../auto-scanner/
-    chmod +x *.sh
+    #chmod +x *.sh
 fi
 
 cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/

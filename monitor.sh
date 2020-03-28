@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+echo "Working dir: $DIR"
 
 log=""
 last_time=0
@@ -24,6 +25,9 @@ trap "rm -f $pipe" EXIT
 
 if [[ ! -p $pipe ]]; then
     echo "MONITOR: Creating pipe: $pipe"
+    if [[ -f $pipe ]]; then
+        rm -f $pipe
+    fi
     mkfifo $pipe
 fi
 
