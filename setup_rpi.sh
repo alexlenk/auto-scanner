@@ -14,7 +14,7 @@ if [ "$first" = "true" ]; then
     fi
 fi
 
-if [ -d /home/pi/auto-scanner ];
+if [ -d /home/pi/auto-scanner ]; then
     cd /home/pi/auto-scanner
     git pull
     chown -R pi:pi auto-scanner/

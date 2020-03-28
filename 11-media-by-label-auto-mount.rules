@@ -14,7 +14,7 @@ IMPORT{program}="test -p /tmp/scannerpipe && echo is_pipe=YES || echo is_pipe=NO
 ENV{is_pipe}=="NO", RUN+="mkfifo /tmp/scannerpipe"
 
 # Global mount options  
-ACTION=="add", ENV{mount_options}="rw,relatime"  
+ACTION=="add", ENV{mount_options}="relatime"  
 # Filesystem-specific mount options  
 ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs", ENV{mount_options}="%E{mount_options},utf8,gid=100,umask=002"  
 # Mount the device  
