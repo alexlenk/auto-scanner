@@ -8,7 +8,7 @@ if [ ! -f $DIR/.env ]; then
 fi
 
 if [ "$SMTP_SERVER" = "" ]; then
-    export $(cat .env | xargs)
+    export $(cat $DIR/.env | xargs)
 fi
 
 files=("$@")
