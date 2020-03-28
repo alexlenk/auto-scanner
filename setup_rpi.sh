@@ -10,14 +10,15 @@ if [ "$first" = "true" ]; then
         apt-get update && apt-get upgrade -y && apt-get install -y docker-compose
     else
         apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git
-        git clone https://github.com/alexlenk/auto-scanner.git
-
-        sudo chown -R pi:pi auto-scanner/
-
-        cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
-        udevadm control --reload-rules
     fi
 fi
+
+git clone https://github.com/alexlenk/auto-scanner.git
+
+sudo chown -R pi:pi auto-scanner/
+
+cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
+udevadm control --reload-rules
 
 if [ "$1" = "ro" ]; then
     apt-get remove --purge wolfram-engine triggerhappy anacron logrotate dphys-swapfile xserver-common lightdm
