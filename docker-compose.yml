@@ -1,0 +1,9 @@
+version: '2.0'
+services:
+  scanner:
+    build: .
+    volumes:
+    - /media/pi:/volumes
+    env_file:
+    - /media/pi/SCANNER/.env
+    restart: always
