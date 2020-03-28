@@ -3,6 +3,7 @@
 if [ ! -d /home/pi/auto-scanner ]; then
     echo "First run ..."
     first=true
+    ln -s /media /volumes
 fi
 
 if [ "$first" = "true" ]; then
