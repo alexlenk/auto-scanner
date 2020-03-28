@@ -1,13 +1,8 @@
 #!/bin/bash
 
-if [ ! -d /home/pi/scanner ]; then
-    mkdir /home/pi/scanner
+if [ ! -d /home/pi/auto-scanner ]; then
     first=true
 fi
-chown -R pi:pi /home/pi/scanner
-
-cp /home/pi/scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
-udevadm control --reload-rules
 
 if [ "first" = "true" ]; then
     if [ "$1" = "docker" ]; then
@@ -15,6 +10,9 @@ if [ "first" = "true" ]; then
     else
         apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git
         git clone https://github.com/alexlenk/auto-scanner.git
+
+        cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
+        udevadm control --reload-rules
 
         if [ "$1" = "ro" ]; then
             apt-get remove --purge wolfram-engine triggerhappy anacron logrotate dphys-swapfile xserver-common lightdm
