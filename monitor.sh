@@ -43,7 +43,7 @@ while true; do
             if [ "$last_files" == "" ]; then
                 echo "MONITOR: Resetting Last Files"
                 i=0
-                while [[ $i -lt 20 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
+                while [[ $i -lt 40 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
                 do
                     sleep 0.5
                     ((i++))
@@ -62,7 +62,7 @@ while true; do
 
                 #TODO: if more than one, it should be a merging case, check merge variable
                 i=0
-                while [[ $i -lt 20 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
+                while [[ $i -lt 40 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
                 do
                     sleep 0.5
                     ((i++))
