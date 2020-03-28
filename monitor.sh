@@ -31,6 +31,7 @@ if [[ ! -p $pipe ]]; then
     mkfifo $pipe
 fi
 
+echo "MONITOR: Starting monitoring ..."
 while true; do
     if read file action <$pipe; then
         time=$(date +%s)
@@ -52,7 +53,12 @@ while true; do
                 last_file=$pdffile
 
                 #TODO: if more than one, it should be a merging case, check merge variable
-                sleep 2
+                
+                while [[ $i -lt 20 ]] && [[ ! -d /volumes/SCANNER/DCIM/200DOC ]]
+                do
+                    sleep 0.5
+                    ((i++))
+                done
                 if [ -d /volumes/SCANNER/DCIM/200DOC ]; then
                     pdffile=`diff <(echo "$last_files") <(echo "$(ls /volumes/SCANNER/DCIM/200DOC)") | grep ">" | cut -c3-`
                     echo "MONITOR: New File in Folder: $pdffile"
