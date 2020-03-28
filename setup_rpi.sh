@@ -17,7 +17,7 @@ fi
 if [ -d /home/pi/auto-scanner ]; then
     cd /home/pi/auto-scanner
     git pull
-    chown -R pi:pi auto-scanner/
+    chown -R pi:pi ../auto-scanner/
     chmod +x *.sh
 fi
 
