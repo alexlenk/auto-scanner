@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#log=()
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 log=""
 last_time=0
 merge=false
@@ -59,7 +59,7 @@ while true; do
                         merge_files=( $pdffile )
                     fi
                     
-                    /tmp/upload.sh ${merge_files[@]} &
+                    $DIR/upload.sh ${merge_files[@]} &
                     pid=$!
 
                     echo "MONITOR: Uploading (PID $pid): ${merge_files[@]}"
@@ -76,7 +76,6 @@ while true; do
             last_time=$(date +%s)
         else
             if [ "$time_diff" -le "3" -a "$start" != "true" ]; then
-                #killall upload.sh
                 kill -9 $pid
                 merge=true
                 echo "MONITOR: Upload stopped (PID: $pid)"
