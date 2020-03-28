@@ -11,13 +11,14 @@ if [ "$first" = "true" ]; then
     else
         apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git
         git clone https://github.com/alexlenk/auto-scanner.git
-        chown -R pi:pi auto-scanner/
     fi
 fi
 
 if [ -d /home/pi/auto-scanner ];
     cd /home/pi/auto-scanner
     git pull
+    chown -R pi:pi auto-scanner/
+    chmod +x *.sh
 fi
 
 cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
