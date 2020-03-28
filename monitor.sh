@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 log=""
 last_time=0
 merge=false
@@ -10,6 +11,11 @@ start=true
 echo "MONITOR: Starting ..."
 if [ -d "/volumes/SCANNER/DCIM/200DOC" ]; then
     last_files=$(ls /volumes/SCANNER/DCIM/200DOC)
+fi
+
+if [ ! -f $DIR/.env ]; then
+    echo "Copy .env File"
+    cp /media/SCANNER/.env $DIR
 fi
 
 pipe=/tmp/scannerpipe

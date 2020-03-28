@@ -1,5 +1,12 @@
 #!/bin/bash
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+if [ ! -f $DIR/.env ]; then
+    echo "Copy .env File"
+    cp /media/SCANNER/.env $DIR
+fi
+
 if [ "$SMTP_SERVER" = "" ]; then
     export $(cat .env | xargs)
 fi
