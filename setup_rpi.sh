@@ -62,6 +62,28 @@ if [ "$1" = "ro" ]; then
     PROMPT_COMMAND=set_bash_prompt 
 EOL
 
+
     echo "mount -o remount,ro /" >> /etc/bash.bash_logout
     echo "mount -o remount,ro /boot" >> /etc/bash.bash_logout
+
+
+    cat >/lib/systemd/system/auto-scanner.service <<EOL
+[Unit]
+Description=Alex Auto Scanner
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/home/pi/auto-scanner/monitor.sh
+Restart=always
+StandardOutput=file:/tmp/auto-scanner.log
+StandardError=file:/tmp/auto-scanner.log
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+    systemctl daemon-reload
+    systemctl enable auto-scanner.service
+
 fi
