@@ -26,22 +26,25 @@ cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
 udevadm control --reload-rules
 
 if [ "$1" = "ro" ]; then
-    apt-get remove --purge triggerhappy logrotate dphys-swapfile
-    apt-get autoremove --purge
+    apt-get remove -y --purge triggerhappy logrotate dphys-swapfile
+    apt-get autoremove -y --purge
     echo `cat /boot/cmdline.txt` fastboot noswap ro > /boot/cmdline.txt
-    apt-get install busybox-syslogd
-    apt-get remove --purge rsyslog
+    apt-get install -y busybox-syslogd
+    apt-get remove -y --purge rsyslog
 
     sed -i "s/\/boot           vfat    defaults/\/boot           vfat    defaults,ro/g" /etc/fstab
-    sed -i "s/\/               ext4    defaults,noatime/\//               ext4    defaults,noatime,ro  0       1/g" /etc/fstab
+    sed -i "s/\/               ext4    defaults,noatime/\/               ext4    defaults,noatime,ro/g" /etc/fstab
     echo "tmpfs        /tmp            tmpfs   nosuid,nodev         0       0" >> /etc/fstab
     echo "tmpfs        /var/log        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
     echo "tmpfs        /var/tmp        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
+    echo "tmpfs        /var/lib/dhcp        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
+    echo "tmpfs        /var/lib/dhcpcd5        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
+    echo "tmpfs        /var/spool        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
 
     rm -rf /var/lib/dhcp /var/lib/dhcpcd5 /var/spool /etc/resolv.conf
-    ln -s /tmp /var/lib/dhcp
-    ln -s /tmp /var/lib/dhcpcd5
-    ln -s /tmp /var/spool
+    #ln -s /tmp /var/lib/dhcp
+    #ln -s /tmp /var/lib/dhcpcd5
+    #ln -s /tmp /var/spool
     touch /tmp/dhcpcd.resolv.conf
     ln -s /tmp/dhcpcd.resolv.conf /etc/resolv.conf
 

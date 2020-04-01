@@ -41,7 +41,7 @@ while true; do
     if [ -d "$folder" ]; then
         sleep 5
     fi
-    if [ -d "$folder" ]; then
+    if [ -d "$folder" ] || [ "$curr_files" = ""  ]; then
         #curr_files=$(ls -l --time-style=+%s /volumes/SCANNER/DCIM/200DOC | awk OFS='\t' '{print $7 ";" $6}')
         curr_files=$(ls -1 $folder)
         new_files_list=`diff <(echo "$last_files") <(echo "$curr_files") | grep ">" | cut -c3-`
