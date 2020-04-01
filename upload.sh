@@ -11,6 +11,10 @@ if [ "$SMTP_SERVER" = "" ]; then
     export $(cat $DIR/.env | xargs)
 fi
 
+if [ ! -f "/tmp/tls-rnd" ]; then
+    dd if=/dev/urandom of=/tmp/tls-rnd bs=1024 count=1
+fi
+
 files=("$@")
 merge_files=()
 for i in "${files[@]}"; do
@@ -45,7 +49,7 @@ else
 fi
 
 echo "UPLOAD<$$>: Uploading: $upload_string"
-echo "" | s-nail -s "Autoscan" -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=$SMTP_SERVER -S smtp-auth-user=$SMTP_USER -S from=$FROM_MAIL -S smtp-auth-password=$SMTP_PASS -S ssl-verify=ignore -S nss-config-dir=/etc/pki/nssdb -a /tmp/$file $TO_MAIL > /dev/null
+echo "" | s-nail -s "Autoscan" -S tls-rand-file=/tmp/tls-rnd -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=$SMTP_SERVER -S smtp-auth-user=$SMTP_USER -S from=$FROM_MAIL -S smtp-auth-password=$SMTP_PASS -S ssl-verify=ignore -S nss-config-dir=/etc/pki/nssdb -a /tmp/$file $TO_MAIL > /dev/null
 
 
 echo "UPLOAD<$$>: Upload done: $upload_string; Deleting temp files."
