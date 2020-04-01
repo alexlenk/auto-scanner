@@ -27,12 +27,12 @@ else
     fi
 fi
 
-if [ ! -f $DIR/.env ]; then
+if [ ! -f /tmp/.env ]; then
     echo "Copy .env File"
-    cp /media/SCANNER/.env $DIR
+    cp /media/SCANNER/.env /tmp/.env
 fi
 if [ "$SMTP_SERVER" = "" ]; then
-    export $(cat $DIR/.env | xargs)
+    export $(cat /tmp/.env | xargs)
 fi
 
 echo "MONITOR: Starting monitoring ..."

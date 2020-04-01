@@ -2,13 +2,13 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-if [ ! -f $DIR/.env ]; then
+if [ ! -f /tmp/.env ]; then
     echo "Copy .env File"
-    cp /media/SCANNER/.env $DIR
+    cp /media/SCANNER/.env /tmp/.env
 fi
 
 if [ "$SMTP_SERVER" = "" ]; then
-    export $(cat $DIR/.env | xargs)
+    export $(cat /tmp/.env | xargs)
 fi
 
 if [ ! -f "/tmp/tls-rnd" ]; then
