@@ -15,13 +15,13 @@ files=("$@")
 merge_files=()
 for i in "${files[@]}"; do
     if [ -f /tmp/$i ]; then
-        file_size1=`ls -al "/volumes/SCANNER/DCIM/200DOC/$i" | awk '{print $5}'`
+        file_size1=`stat -c %s "/volumes/SCANNER/DCIM/200DOC/$i"`
     else
         file_size1=1000000000
     fi
     
     if [ -f /tmp/$i ]; then
-        file_size2=`ls -al "/tmp/$i" | awk '{print $5}'`
+        file_size2=`stat -c %s "/volumes/SCANNER/DCIM/200DOC/$i"`
     else
         file_size2=0
     fi
