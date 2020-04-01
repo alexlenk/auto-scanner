@@ -41,19 +41,21 @@ while true; do
     if [ -d "$folder" ]; then
         sleep 5
     fi
-    if [ -d "$folder" ] || [ "$curr_files" = ""  ]; then
-        #curr_files=$(ls -l --time-style=+%s /volumes/SCANNER/DCIM/200DOC | awk OFS='\t' '{print $7 ";" $6}')
+    if [ -d "$folder" ] || [ "$last_files" = ""  ]; then
         curr_files=$(ls -1 $folder)
         new_files_list=`diff <(echo "$last_files") <(echo "$curr_files") | grep ">" | cut -c3-`
         new_files=()
         IFS_SAV=$IFS
         IFS=$'\n'
         for item in $new_files_list; do
-            #echo $new_files_list
-            #echo "New Item: $item"
             new_files+=( "$item" )
         done
-        #IFS=$IFS_SAV
+
+        if [ "${#new_files[@]}" -gt "50" ]; then
+            echo "MONITOR: Error while loading. Resetting last file list."
+            new_files=()
+            last_files=""
+        fi
     else
         sleep 5
     fi
