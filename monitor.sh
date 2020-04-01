@@ -11,15 +11,15 @@ start=true
 update_curr_files=true
 folder=/volumes/SCANNER/DCIM/200DOC
 
+echo "MONITOR: Starting ... waiting for folder to become available ..."
+while [[ ! -d $folder ]]; do
+    sleep 0.5
+done
+
 if [ -f "/tmp/last_files" ]; then
     echo "MONITOR: Loading cached current file list ..."
     last_files=$(cat /tmp/last_files)
 else
-    echo "MONITOR: Starting ... waiting for folder to become available ..."
-    while [[ ! -d $folder ]]; do
-        sleep 0.5
-    done
-
     echo "MONITOR: Initializing current file list ..."
     if [ -d "$folder" ]; then
         last_files=$(ls $folder)
