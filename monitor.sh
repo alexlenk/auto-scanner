@@ -76,7 +76,7 @@ while true; do
                 if [ "$next_file_date" = "" ]; then next_file_date=0; fi
                 ((diff=$next_file_date-${new_file_date}))
                 #echo "Difference to next file: $diff"
-                if [ "$diff" -lt "25" -a "$diff" -ge "0" ]; then
+                if [ "$diff" -lt "20" -a "$diff" -ge "0" ]; then
                     echo "MONITOR: Adding file to merge list: ${new_file}"
                     merge_list+=( "${new_file}" )
                     #echo "Merge List: ${merge_list[@]}"
@@ -88,7 +88,7 @@ while true; do
                     if [ "$last_file_date" = "" ]; then last_file_date=0; fi
                     ((diff=${new_file_date}-${last_file_date}))
                     #echo "Difference to last file: $diff"
-                    if [ "$diff" -lt "25" ]; then
+                    if [ "$diff" -lt "20" ]; then
                         echo "MONITOR: Adding last file to merge list: ${new_file}"
                     fi
                     merge_list+=( "${new_file}" )
