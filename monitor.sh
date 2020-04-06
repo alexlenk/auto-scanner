@@ -10,15 +10,20 @@ time=$(date +%s)
 start=true
 update_curr_files=true
 folder=/volumes/SCANNER/DCIM/200DOC
+if [ -d "/volumes/STICK" ]; then
+    tmp_folder="/volumes/STICK"
+else
+    tmp_folder="/tmp"
+fi
 
 echo "MONITOR: Starting ... waiting for folder to become available ..."
 while [[ ! -d $folder ]]; do
     sleep 0.5
 done
 
-if [ -f "/tmp/last_files" ]; then
+if [ -f "$tmp_folder/last_files" ]; then
     echo "MONITOR: Loading cached current file list ..."
-    last_files=$(cat /tmp/last_files)
+    last_files=$(cat $tmp_folder/last_files)
 else
     echo "MONITOR: Initializing current file list ..."
     if [ -d "$folder" ]; then
@@ -98,7 +103,7 @@ while true; do
                     echo "MONITOR: Uploading (PID $pid): ${merge_list[@]}"
                     merge_list=()
                     last_files=$curr_files
-                    echo $last_files > /tmp/last_files
+                    echo $last_files > $tmp_folder/last_files
                 fi
             fi
         done
