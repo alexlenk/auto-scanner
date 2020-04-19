@@ -59,7 +59,7 @@ while true; do
         if [ "${#new_files[@]}" -gt "50" ]; then
             echo "MONITOR: Error while loading. Resetting last file list."
             new_files=()
-            last_files=""
+            last_files=$(ls $folder)
         fi
     else
         sleep 5
