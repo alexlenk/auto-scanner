@@ -16,6 +16,8 @@ else
     tmp_folder="/tmp"
 fi
 
+echo "MONITOR: Using temp folder '$tmp_folder'"
+
 echo "MONITOR: Starting ... waiting for folder to become available ..."
 while [[ ! -d $folder ]]; do
     sleep 0.5
@@ -58,17 +60,9 @@ while true; do
 
         if [ "${#new_files[@]}" -gt "50" ]; then
             echo "MONITOR: Error while loading. Resetting last file list."
+            echo "MONITOR: Last uploaded file: $(cat $tmp_folder/last_uploaded_file)"
             new_files=()
-            if [ -f "$tmp_folder/last_files" ]; then
-                echo "MONITOR: Loading cached current file list ..."
-                last_files=$(cat $tmp_folder/last_files)
-            else
-                echo "MONITOR: Initializing current file list ..."
-                if [ -d "$folder" ]; then
-                    last_files=$(ls $folder)
-                    #last_files=""
-                fi
-            fi
+            last_files=$(ls $folder)
         fi
     else
         sleep 5
@@ -90,7 +84,7 @@ while true; do
                 if [ "$next_file_date" = "" ]; then next_file_date=0; fi
                 ((diff=$next_file_date-${new_file_date}))
                 #echo "Difference to next file: $diff"
-                if [ "$diff" -lt "20" -a "$diff" -ge "0" ]; then
+                if [ "$diff" -lt "22" -a "$diff" -ge "0" ]; then
                     echo "MONITOR: Adding file to merge list: ${new_file}"
                     merge_list+=( "${new_file}" )
                     #echo "Merge List: ${merge_list[@]}"
@@ -102,10 +96,11 @@ while true; do
                     if [ "$last_file_date" = "" ]; then last_file_date=0; fi
                     ((diff=${new_file_date}-${last_file_date}))
                     #echo "Difference to last file: $diff"
-                    if [ "$diff" -lt "20" ]; then
+                    if [ "$diff" -lt "22" ]; then
                         echo "MONITOR: Adding last file to merge list: ${new_file}"
                     fi
                     merge_list+=( "${new_file}" )
+                    echo ${new_file} > $tmp_folder/last_uploaded_file
                     $DIR/upload.sh ${merge_list[@]} &
                     pid=$!
 
