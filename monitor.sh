@@ -49,6 +49,7 @@ while true; do
         sleep 5
     fi
     if [ -d "$folder" ] || [ "$last_files" = ""  ]; then
+        cp /volumes/SCANNER/DCIM/100PHOTO/* /volumes/SCANNER/DCIM/200DOC
         curr_files=$(ls -1 $folder)
         new_files_list=`diff <(echo "$last_files") <(echo "$curr_files") | grep ">" | cut -c3-`
         new_files=()
