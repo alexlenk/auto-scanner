@@ -1,5 +1,6 @@
 #!/bin/bash
 
+files=("$@")
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 filename=$(basename -- "${files[0]}")
@@ -29,7 +30,6 @@ if [ ! -f "/tmp/tls-rnd" ]; then
     dd if=/dev/urandom of=/tmp/tls-rnd bs=1024 count=1
 fi
 
-files=("$@")
 merge_files=()
 for i in "${files[@]}"; do
     if [ -f /tmp/$i ]; then
