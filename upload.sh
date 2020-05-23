@@ -3,8 +3,12 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 filename=$(basename -- "${files[0]}")
+echo "Filename: $filename"
 extension="${filename##*.}"
+echo "extension: $extension"
 extension_small=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
+echo "extension_small: $extension_small"
+
 
 if [ "$extension_small" = "jpg" ]; then
     file_dir=/volumes/SCANNER/DCIM/100PHOTO
