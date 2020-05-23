@@ -91,7 +91,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/home/pi/auto-scanner/monitor.sh /volumes/SCANNER/DCIM/100IMG
+ExecStart=/home/pi/auto-scanner/monitor.sh /volumes/SCANNER/DCIM/100PHOTO
 Restart=always
 StandardOutput=file:/tmp/auto-scanner.log
 StandardError=file:/tmp/auto-scanner.log
