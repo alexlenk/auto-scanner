@@ -7,7 +7,7 @@ extension="${filename##*.}"
 extension_small=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
 
 if [ "$extension_small" = "jpg" ]; then
-    file_dir=/volumes/SCANNER/DCIM/100IMG
+    file_dir=/volumes/SCANNER/DCIM/100PHOTO
 else
     file_dir=/volumes/SCANNER/DCIM/200DOC
 fi
