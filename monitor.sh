@@ -9,25 +9,25 @@ merge=false
 time=$(date +%s)
 start=true
 update_curr_files=true
-folder=$1
+folder=/volumes/SCANNER/DCIM/200DOC
 if [ -d "/volumes/STICK" ]; then
     tmp_folder="/volumes/STICK"
 else
     tmp_folder="/tmp"
 fi
 
-echo "MONITOR ($1): Using temp folder '$tmp_folder'"
+echo "MONITOR: Using temp folder '$tmp_folder'"
 
-echo "MONITOR ($1): Starting ... waiting for folder to become available ..."
+echo "MONITOR: Starting ... waiting for folder to become available ..."
 while [[ ! -d $folder ]]; do
     sleep 0.5
 done
 
 if [ -f "$tmp_folder/last_files" ]; then
-    echo "MONITOR ($1): Loading cached current file list ..."
+    echo "MONITOR: Loading cached current file list ..."
     last_files=$(cat $tmp_folder/last_files)
 else
-    echo "MONITOR ($1): Initializing current file list ..."
+    echo "MONITOR: Initializing current file list ..."
     if [ -d "$folder" ]; then
         last_files=$(ls $folder)
         #last_files=""
@@ -42,7 +42,7 @@ if [ "$SMTP_SERVER" = "" ]; then
     export $(cat /tmp/.env | xargs)
 fi
 
-echo "MONITOR ($1): Starting monitoring ..."
+echo "MONITOR: Starting monitoring ..."
 
 while true; do
     if [ -d "$folder" ]; then
@@ -59,8 +59,8 @@ while true; do
         done
 
         if [ "${#new_files[@]}" -gt "50" ]; then
-            echo "MONITOR ($1): Error while loading. Resetting last file list."
-            echo "MONITOR ($1): Last uploaded file: $(cat $tmp_folder/last_uploaded_file)"
+            echo "MONITOR: Error while loading. Resetting last file list."
+            echo "MONITOR: Last uploaded file: $(cat $tmp_folder/last_uploaded_file)"
             new_files=()
             last_files=$(ls $folder)
         fi
@@ -85,7 +85,7 @@ while true; do
                 ((diff=$next_file_date-${new_file_date}))
                 #echo "Difference to next file: $diff"
                 if [ "$diff" -lt "22" -a "$diff" -ge "0" ]; then
-                    echo "MONITOR ($1): Adding file to merge list: ${new_file}"
+                    echo "MONITOR: Adding file to merge list: ${new_file}"
                     merge_list+=( "${new_file}" )
                     #echo "Merge List: ${merge_list[@]}"
                 else
@@ -97,14 +97,14 @@ while true; do
                     ((diff=${new_file_date}-${last_file_date}))
                     #echo "Difference to last file: $diff"
                     if [ "$diff" -lt "22" ]; then
-                        echo "MONITOR ($1): Adding last file to merge list: ${new_file}"
+                        echo "MONITOR: Adding last file to merge list: ${new_file}"
                     fi
                     merge_list+=( "${new_file}" )
                     echo ${new_file} > $tmp_folder/last_uploaded_file
                     $DIR/upload.sh ${merge_list[@]} &
                     pid=$!
 
-                    echo "MONITOR ($1): Uploading (PID $pid): ${merge_list[@]}"
+                    echo "MONITOR: Uploading (PID $pid): ${merge_list[@]}"
                     merge_list=()
                     last_files=$curr_files
                     echo $last_files > $tmp_folder/last_files
