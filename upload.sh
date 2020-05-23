@@ -55,7 +55,7 @@ sleep 10
 
 if [ "$extension_small" = "jpg" ]; then
     file="${filename%.*}-merged.pdf"
-    mogrify -normalize -level 10%,83% -sharpen 0x1 /tmp/*.$extension
+    mogrify -normalize -level 10%,83% -sharpen 0x1 -enhance /tmp/*.$extension
     convert ${merge_files[@]} /tmp/$file
 else
     if [ ${#files[@]} -gt 1 ]; then
