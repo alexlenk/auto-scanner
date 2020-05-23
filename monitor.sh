@@ -9,7 +9,7 @@ merge=false
 time=$(date +%s)
 start=true
 update_curr_files=true
-folder=/volumes/SCANNER/DCIM/200DOC
+folder=$1
 if [ -d "/volumes/STICK" ]; then
     tmp_folder="/volumes/STICK"
 else
@@ -59,7 +59,7 @@ while true; do
 
         if [ "${#new_files[@]}" -gt "50" ]; then
             echo "MONITOR ($folder): Error while loading. Resetting last file list."
-            echo "MONITOR ($folder): Last uploaded file: $(cat $tmp_folder/last_uploaded_file)"
+            echo "MONITOR ($folder): Last uploaded file: $(cat $tmp_folder/last_uploaded_file${folder//[\/]/-})"
             new_files=()
             last_files=$(ls $folder)
         fi
@@ -99,14 +99,14 @@ while true; do
                         echo "MONITOR ($folder): Adding last file to merge list: ${new_file}"
                     fi
                     merge_list+=( "${new_file}" )
-                    echo ${new_file} > $tmp_folder/last_uploaded_file
+                    echo ${new_file} > $tmp_folder/last_uploaded_file${folder//[\/]/-}
                     $DIR/upload.sh ${merge_list[@]} &
                     pid=$!
 
                     echo "MONITOR ($folder): Uploading (PID $pid): ${merge_list[@]}"
                     merge_list=()
                     last_files=$curr_files
-                    echo $last_files > $tmp_folder/last_files-${folder//[\/]/-}
+                    echo $last_files > $tmp_folder/last_files${folder//[\/]/-}
                 fi
             fi
         done

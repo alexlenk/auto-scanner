@@ -70,12 +70,28 @@ EOL
 
     cat >/lib/systemd/system/auto-scanner.service <<EOL
 [Unit]
-Description=Alex Auto Scanner
+Description=Alex Auto Scanner for PDF
 After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/home/pi/auto-scanner/monitor.sh
+ExecStart=/home/pi/auto-scanner/monitor.sh /volumes/SCANNER/DCIM/200DOC
+Restart=always
+StandardOutput=file:/tmp/auto-scanner.log
+StandardError=file:/tmp/auto-scanner.log
+
+[Install]
+WantedBy=multi-user.target
+EOL
+
+cat >/lib/systemd/system/auto-scanner-img.service <<EOL
+[Unit]
+Description=Alex Auto Scanner for Images
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/home/pi/auto-scanner/monitor.sh /volumes/SCANNER/DCIM/100IMG
 Restart=always
 StandardOutput=file:/tmp/auto-scanner.log
 StandardError=file:/tmp/auto-scanner.log
@@ -86,5 +102,6 @@ EOL
 
     systemctl daemon-reload
     systemctl enable auto-scanner.service
+    systemctl enable auto-scanner-img.service
 
 fi

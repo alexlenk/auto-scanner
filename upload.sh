@@ -2,6 +2,16 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+filename=$(basename -- "${files[0]}")
+extension="${filename##*.}"
+extension_small=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
+
+if [ "$extension_small" = "jpg" ]; then
+    file_dir=/volumes/SCANNER/DCIM/100IMG
+else
+    file_dir=/volumes/SCANNER/DCIM/200DOC
+fi
+
 if [ ! -f /tmp/.env ]; then
     echo "Copy .env File"
     cp /media/SCANNER/.env /tmp/.env
@@ -19,29 +29,25 @@ files=("$@")
 merge_files=()
 for i in "${files[@]}"; do
     if [ -f /tmp/$i ]; then
-        file_size1=`stat -c %s "/volumes/SCANNER/DCIM/200DOC/$i"`
+        file_size1=`stat -c %s "$file_dir/$i"`
     else
         file_size1=1000000000
     fi
     
     if [ -f /tmp/$i ]; then
-        file_size2=`stat -c %s "/volumes/SCANNER/DCIM/200DOC/$i"`
+        file_size2=`stat -c %s "$file_dir/$i"`
     else
         file_size2=0
     fi
 
     if [ ! -f /tmp/$i ] || [ "$file_size1" -ne "$file_size2" ]; then
-        cp /volumes/SCANNER/DCIM/200DOC/$i /tmp/$i
+        cp $file_dir/$i /tmp/$i
         echo "UPLOAD<$$>: Copied $i"
     fi
     merge_files+=( "/tmp/$i" )
 done
 
 sleep 10
-
-filename=$(basename -- "${files[0]}")
-extension="${filename##*.}"
-extension_small=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
 
 if [ "$extension_small" = "jpg" ]; then
     file="${filename%.*}-merged.pdf"
