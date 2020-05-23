@@ -11,7 +11,7 @@ if [ "$first" = "true" ]; then
     if [ "$1" = "docker" ]; then
         apt-get update && apt-get upgrade -y && apt-get install -y docker-compose
     else
-        apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git
+        apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git ghostscript imagemagick
         git clone https://github.com/alexlenk/auto-scanner.git
     fi
 fi

@@ -39,13 +39,23 @@ done
 
 sleep 10
 
-if [ ${#files[@]} -gt 1 ]; then
-    file="${files[0]}-merged.pdf"
-    pdfunite ${merge_files[@]} /tmp/$file
-    upload_string="$file (${files[@]})"
+filename=$(basename -- "${files[0]}")
+extension="${filename##*.}"
+extension_small=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
+
+if [ "$extension_small" = "jpg" ]; then
+    file="${filename%.*}-merged.pdf"
+    mogrify -normalize -level 10%,83% -sharpen 0x1 /tmp/*.$extension
+    convert ${merge_files[@]} /tmp/$file
 else
-    file=${files[0]}
-    upload_string="$file"
+    if [ ${#files[@]} -gt 1 ]; then
+        file="${files[0]}-merged.pdf"
+        pdfunite ${merge_files[@]} /tmp/$file
+        upload_string="$file (${files[@]})"
+    else
+        file=${files[0]}
+        upload_string="$file"
+    fi
 fi
 
 echo "UPLOAD<$$>: Uploading: $upload_string"
