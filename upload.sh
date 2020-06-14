@@ -55,7 +55,7 @@ sleep 10
 
 if [ "$extension_small" = "jpg" ]; then
     file="${filename%.*}-merged.pdf"
-    mogrify -normalize -level 10%,81% -sharpen 0x1 -enhance /tmp/*.$extension
+    mogrify -shave 10 -bordercolor 'rgb(216,194,111)' -border 5 -fuzz 20% -trim +repage -bordercolor white -border 10 -deskew 80% -normalize -level 10%,81% -sharpen 0x1 -enhance /tmp/*.$extension
     convert ${merge_files[@]} /tmp/$file
 else
     if [ ${#files[@]} -gt 1 ]; then
