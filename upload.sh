@@ -56,7 +56,7 @@ sleep 10
 if [ "$extension_small" = "jpg" ]; then
     file="${filename%.*}-merged.pdf"
     #mogrify -shave 10 -bordercolor 'rgb(216,194,111)' -border 5 -fuzz 20% -trim +repage -bordercolor white -border 10 -deskew 80% -normalize -level 10%,81% -sharpen 0x1 -enhance /tmp/*.$extension
-    mogrify -normalize -level 10%,81% -sharpen 0x1 -enhance -bordercolor 'rgb(216,194,111)' -border 10 -fuzz 20% -fill white -draw "color 2,2 floodfill" +repage -deskew 80% -shave 20x20 -bordercolor white -border 10 /tmp/*.$extension
+    mogrify -normalize -level 10%,81% -sharpen 0x1 -enhance -bordercolor 'rgb(216,194,111)' -border 10 -fuzz 20% -fill white -draw "color 2,2 floodfill" +repage -deskew 80% -shave 20x20 -bordercolor black -border 5 -fill white -draw "color 2,2 floodfill" -bordercolor white -border 5 /tmp/*.$extension
     convert ${merge_files[@]} /tmp/$file
     upload_string="$file"
 else
