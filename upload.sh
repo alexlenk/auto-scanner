@@ -60,6 +60,7 @@ if [ "$extension_small" = "jpg" ]; then
 
     for list_file in "${merge_files[@]}"; do
         echo "UPLOAD<$$>: Enhancing $list_file"
+        convert $list_file $list_file
         convert $list_file -normalize -level 10%,81% -sharpen 0x1 -enhance -bordercolor 'rgb(216,194,111)' -border 10 -fuzz 20% -fill white -draw "color 2,2 floodfill" +repage -deskew 80% -shave 20x20 -bordercolor black -border 5 -fill white -draw "color 2,2 floodfill" -bordercolor white -border 5 -quiet $list_file
     done
     convert ${merge_files[@]} /tmp/$file
