@@ -106,8 +106,8 @@ else
         echo ${files[0]} >> $tmp_folder/error_backlog
     fi
     #cp /tmp/auto-scanner-upload.log $tmp_folder/error_files/$file-auto-scanner-upload.log
-    cp /tmp/auto-scanner.log $tmp_folder/error_files/$file-auto-scanner.log
-    tail -n 500 /tmp/auto-scanner.log | s-nail -v -s "Autoscan Error" -S tls-rand-file=/tmp/tls-rnd -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=$SMTP_SERVER -S smtp-auth-user=$SMTP_USER -S from=$FROM_MAIL -S smtp-auth-password=$SMTP_PASS -S ssl-verify=ignore -S nss-config-dir=/etc/pki/nssdb $TO_MAIL_ERROR
+    cp /tmp/auto-scanner-$extension_small.log $tmp_folder/error_files/$file-$extension_small.log
+    tail -n 500 /tmp/auto-scanner-$extension_small.log | s-nail -v -s "Autoscan Error" -S tls-rand-file=/tmp/tls-rnd -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=$SMTP_SERVER -S smtp-auth-user=$SMTP_USER -S from=$FROM_MAIL -S smtp-auth-password=$SMTP_PASS -S ssl-verify=ignore -S nss-config-dir=/etc/pki/nssdb $TO_MAIL_ERROR
     echo "UPLOAD<$$>: Upload failed: $upload_string."
 fi
 

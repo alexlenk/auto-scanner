@@ -77,8 +77,8 @@ After=multi-user.target
 Type=idle
 ExecStart=/home/pi/auto-scanner/monitor.sh /volumes/SCANNER/DCIM/200DOC
 Restart=always
-StandardOutput=file:/tmp/auto-scanner.log
-StandardError=file:/tmp/auto-scanner.log
+StandardOutput=file:/tmp/auto-scanner-pdf.log
+StandardError=file:/tmp/auto-scanner-pdf.log
 
 [Install]
 WantedBy=multi-user.target
@@ -93,8 +93,8 @@ After=multi-user.target
 Type=idle
 ExecStart=/home/pi/auto-scanner/monitor.sh /volumes/SCANNER/DCIM/100PHOTO
 Restart=always
-StandardOutput=file:/tmp/auto-scanner.log
-StandardError=file:/tmp/auto-scanner.log
+StandardOutput=file:/tmp/auto-scanner-jpg.log
+StandardError=file:/tmp/auto-scanner-jpg.log
 
 [Install]
 WantedBy=multi-user.target
