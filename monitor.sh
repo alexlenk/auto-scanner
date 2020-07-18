@@ -65,6 +65,7 @@ while true; do
             echo "MONITOR ($folder): Last uploaded file: $(cat $tmp_folder/last_uploaded_file${folder//[\/]/-})"
             new_files=()
             last_files=$(ls $folder)
+            echo $last_files > $tmp_folder/last_files${folder//[\/]/-}
         fi
     else
         sleep 5
