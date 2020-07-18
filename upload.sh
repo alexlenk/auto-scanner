@@ -103,7 +103,6 @@ else
         cp /tmp/${files[0]} /tmp/$file $tmp_folder/error_files/
         echo ${files[0]} >> $tmp_folder/error_backlog
     fi
-    echo ${#files[@]} >> $tmp_folder/error_backlog
     cp /tmp/auto-scanner-upload.log $tmp_folder/error_files/$file-auto-scanner-upload.log
     cp /tmp/auto-scanner.log $tmp_folder/error_files/$file-auto-scanner.log
     echo "Error Uploading: " /tmp/$file | s-nail -v -s "Autoscan Error" -S tls-rand-file=/tmp/tls-rnd -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=$SMTP_SERVER -S smtp-auth-user=$SMTP_USER -S from=$FROM_MAIL -S smtp-auth-password=$SMTP_PASS -S ssl-verify=ignore -S nss-config-dir=/etc/pki/nssdb -a /tmp/auto-scanner-upload.log $TO_MAIL_ERROR
