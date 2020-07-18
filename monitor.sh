@@ -25,12 +25,12 @@ done
 
 if [ -f "$tmp_folder/last_files${folder//[\/]/-}" ]; then
     echo "MONITOR ($folder): Loading cached current file list ..."
-    last_files=$(cat $tmp_folder/last_files${folder//[\/]/-})
+    last_files=$(cat $tmp_folder/last_files${folder//[\/]/-} | tr " " "\n")
 else
     echo "MONITOR ($folder): File $tmp_folder/last_files${folder//[\/]/-} does not exist"
     echo "MONITOR ($folder): Initializing current file list ..."
     if [ -d "$folder" ]; then
-        last_files=$(ls $folder)
+        last_files=$(ls -1 $folder | tr " " "\n")
     fi
 fi
 
@@ -51,7 +51,7 @@ while true; do
         sleep 5
     fi
     if [ -d "$folder" ] || [ "$last_files" = ""  ]; then
-        curr_files=$(ls -1 $folder)
+        curr_files=$(ls -1 $folder | tr " " "\n")
         new_files_list=`diff <(echo "$last_files") <(echo "$curr_files") | grep ">" | cut -c3-`
         new_files=()
         IFS_SAV=$IFS
@@ -64,7 +64,7 @@ while true; do
             echo "MONITOR ($folder): Error while loading. Resetting last file list."
             echo "MONITOR ($folder): Last uploaded file: $(cat $tmp_folder/last_uploaded_file${folder//[\/]/-})"
             new_files=()
-            last_files=$(ls $folder)
+            last_files=$(ls -1 $folder | tr " " "\n")
             echo $last_files > $tmp_folder/last_files${folder//[\/]/-}
         fi
     else
