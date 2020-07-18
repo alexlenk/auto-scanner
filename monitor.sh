@@ -27,6 +27,7 @@ if [ -f "$tmp_folder/last_files-${folder//[\/]/-}" ]; then
     echo "MONITOR ($folder): Loading cached current file list ..."
     last_files=$(cat $tmp_folder/last_files-${folder//[\/]/-})
 else
+    echo "MONITOR ($folder): File $tmp_folder/last_files-${folder//[\/]/-} does not exist"
     echo "MONITOR ($folder): Initializing current file list ..."
     if [ -d "$folder" ]; then
         last_files=$(ls $folder)
