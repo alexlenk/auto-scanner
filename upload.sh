@@ -94,7 +94,9 @@ echo "" | s-nail -v -s "Autoscan" -S tls-rand-file=/tmp/tls-rnd -S smtp-use-star
 if [ "$?" -eq "0" ]; then
     echo "UPLOAD<$$>: Upload done: $upload_string."
 else
-    mkdir $tmp_folder/error_files
+    if [ ! -d $tmp_folder/error_files ]; then
+        mkdir $tmp_folder/error_files
+    fi
 
     if [ ${#files[@]} -gt 1 ]; then
         cp ${merge_files[@]} /tmp/$file $tmp_folder/error_files/
