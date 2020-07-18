@@ -97,7 +97,7 @@ else
         cp ${merge_files[@]} /tmp/$file $tmp_folder/error_files/
         echo ${merge_files[@]} >> $tmp_folder/error_backlog
     else
-        cp /tmp/${files[0]} $tmp_folder/error_files/
+        cp /tmp/${files[0]} /tmp/$file $tmp_folder/error_files/
         echo ${files[0]} >> $tmp_folder/error_backlog
     fi
     echo ${#files[@]} >> $tmp_folder/error_backlog
@@ -113,5 +113,5 @@ echo "UPLOAD<$$>: Deleting temp files."
 if [ ${#files[@]} -gt 1 ]; then
     rm ${merge_files[@]} /tmp/$file
 else
-    rm /tmp/${files[0]}
+    rm /tmp/${files[0]} /tmp/$file
 fi
