@@ -33,6 +33,8 @@ else
     fi
 fi
 
+echo $last_files
+
 if [ ! -f /tmp/.env ]; then
     echo "Copy .env File"
     cp /media/SCANNER/.env /tmp/.env
