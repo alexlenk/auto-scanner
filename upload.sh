@@ -95,8 +95,10 @@ else
 
     if [ ${#files[@]} -gt 1 ]; then
         cp ${merge_files[@]} /tmp/$file $tmp_folder/error_files/
+        echo ${merge_files[@]} >> $tmp_folder/error_backlog
     else
         cp /tmp/${files[0]} $tmp_folder/error_files/
+        echo ${files[0]} >> $tmp_folder/error_backlog
     fi
     echo ${#files[@]} >> $tmp_folder/error_backlog
     cp /tmp/auto-scanner-upload.log $tmp_folder/error_files/$file-auto-scanner-upload.log
