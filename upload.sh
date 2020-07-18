@@ -2,6 +2,9 @@
 
 files=("$@")
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+START_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+
+echo "UPLOAD<$$>: Starting Upload ... $(date +%Y-%m-%d_%H-%M-%S)"
 
 filename=$(basename -- "${files[0]}")
 echo "Filename: $filename"
@@ -79,9 +82,16 @@ fi
 echo "UPLOAD<$$>: Uploading: $upload_string"
 echo "" | s-nail -v -s "Autoscan" -S tls-rand-file=/tmp/tls-rnd -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=$SMTP_SERVER -S smtp-auth-user=$SMTP_USER -S from=$FROM_MAIL -S smtp-auth-password=$SMTP_PASS -S ssl-verify=ignore -S nss-config-dir=/etc/pki/nssdb -a /tmp/$file $TO_MAIL >> /tmp/auto-scanner-upload.log
 
+if [ "$?" -eq "0" ]; then
+    echo "UPLOAD<$$>: Upload done: $upload_string."
+else
+    echo "Error Uploading: " + /tmp/$file | s-nail -v -s "Autoscan Error" -S tls-rand-file=/tmp/tls-rnd -S smtp-use-starttls -S ssl-verify=ignore -S smtp-auth=login -S smtp=$SMTP_SERVER -S smtp-auth-user=$SMTP_USER -S from=$FROM_MAIL -S smtp-auth-password=$SMTP_PASS -S ssl-verify=ignore -S nss-config-dir=/etc/pki/nssdb $TO_MAIL_ERROR >> /tmp/auto-scanner-upload.log
+    echo "UPLOAD<$$>: Upload failed: $upload_string."
+fi
 
-echo "UPLOAD<$$>: Upload done: $upload_string; Deleting temp files."
+echo "UPLOAD<$$>: Ending Upload ... $(date +%Y-%m-%d_%H-%M-%S)"
 
+echo "UPLOAD<$$>: Deleting temp files."
 if [ ${#files[@]} -gt 1 ]; then
     rm ${merge_files[@]} /tmp/$file
 else
