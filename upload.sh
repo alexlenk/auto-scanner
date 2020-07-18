@@ -19,7 +19,7 @@ echo "extension: $extension"
 extension_small=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
 echo "extension_small: $extension_small"
 
-if [ "$ERROR_REPLAY" -eq "TRUE" ]; then
+if [ "$ERROR_REPLAY" = "TRUE" ]; then
     file_dir=$tmp_folder/error_files
 elif [ "$extension_small" = "jpg" ]; then
     file_dir=/volumes/SCANNER/DCIM/100PHOTO
