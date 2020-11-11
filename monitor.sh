@@ -3,6 +3,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 echo "Working dir: $DIR"
 
+sh -c "echo 'MONITOR: Setting Restart Timer: 72000 Seconds';sleep 72000; echo 'MONITOR: Restarting.'; restart" &
+
 log=""
 last_time=0
 merge=false
