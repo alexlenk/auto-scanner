@@ -13,6 +13,8 @@ if [ "$first" = "true" ]; then
     else
         apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git ghostscript imagemagick
         git clone https://github.com/alexlenk/auto-scanner.git
+        mkdir /media/STICK
+        echo "/dev/sda1        /media/STICK        ext4   defaults         0       0" >> /etc/fstab
     fi
 fi
 
@@ -29,9 +31,6 @@ apt-get remove -y --purge triggerhappy logrotate dphys-swapfile
 apt-get autoremove -y --purge
 apt-get install -y busybox-syslogd
 apt-get remove -y --purge rsyslog
-
-mkdir /media/STICK
-echo "/dev/sda1        /media/STICK        ext4   defaults         0       0" >> /etc/fstab
 
 if [ "$1" = "ro" ]; then
     sed -i "s/\/boot           vfat    defaults/\/boot           vfat    defaults,ro/g" /etc/fstab
