@@ -66,7 +66,7 @@ EOL
 
     echo "mount -o remount,ro /" >> /etc/bash.bash_logout
     echo "mount -o remount,ro /boot" >> /etc/bash.bash_logout
-
+fi
 
     cat >/lib/systemd/system/auto-scanner.service <<EOL
 [Unit]
@@ -104,4 +104,3 @@ EOL
     systemctl enable auto-scanner.service
     systemctl enable auto-scanner-img.service
 
-fi
