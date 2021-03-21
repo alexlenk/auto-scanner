@@ -22,8 +22,8 @@ if [ -d /home/pi/auto-scanner ]; then
     chown -R pi:pi ../auto-scanner/
 fi
 
-cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
-udevadm control --reload-rules
+#cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
+#udevadm control --reload-rules
 
 if [ "$1" = "ro" ]; then
     apt-get remove -y --purge triggerhappy logrotate dphys-swapfile
