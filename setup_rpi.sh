@@ -8,7 +8,8 @@ if [ ! -d /home/pi/auto-scanner ]; then
     apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git ghostscript imagemagick
     git clone https://github.com/alexlenk/auto-scanner.git
     mkdir /media/STICK
-    echo "/dev/sda1        /media/STICK        ext4   defaults         0       0" >> /etc/fstab
+    #echo "/dev/sda1        /media/STICK        ext4   defaults         0       0" >> /etc/fstab
+    sed -i "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<!--<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>-->/g" /etc/ImageMagick-6/policy.xml
 fi
 
 if [ -d /home/pi/auto-scanner ]; then
@@ -58,7 +59,7 @@ EOL
     echo "mount -o remount,ro /boot" >> /etc/bash.bash_logout
 fi
 
-    cat >/lib/systemd/system/auto-scanner.service <<EOL
+cat >/lib/systemd/system/auto-scanner.service <<EOL
 [Unit]
 Description=Alex Auto Scanner for PDF
 After=multi-user.target
@@ -90,7 +91,7 @@ StandardError=file:/tmp/auto-scanner-jpg.log
 WantedBy=multi-user.target
 EOL
 
-    systemctl daemon-reload
-    systemctl enable auto-scanner.service
-    systemctl enable auto-scanner-img.service
+systemctl daemon-reload
+systemctl enable auto-scanner.service
+systemctl enable auto-scanner-img.service
 
