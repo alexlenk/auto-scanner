@@ -1,0 +1,27 @@
+KERNEL!="sd[a-z][0-9]", GOTO="media_by_label_auto_mount_end"  
+# Import FS infos  
+IMPORT{program}="/sbin/blkid -o udev -p %N"  
+# Get a label if present, otherwise specify one  
+#ENV{ID_FS_LABEL}!="", ENV{dir_name}="%E{ID_FS_LABEL}"  
+#ENV{ID_FS_LABEL}=="", ENV{dir_name}="usbhd-%k"
+
+ENV{ID_FS_LABEL_FATBOOT}!="", ENV{dir_name}="%E{ID_FS_LABEL_FATBOOT}"  
+ENV{ID_FS_LABEL_FATBOOT}=="", ENV{dir_name}="usbhd-%k"
+
+IMPORT{program}="test -f /tmp/scannerpipe && rm -f /tmp/scannerpipe"
+
+IMPORT{program}="test -p /tmp/scannerpipe && echo is_pipe=YES || echo is_pipe=NO"  
+ENV{is_pipe}=="NO", RUN+="mkfifo /tmp/scannerpipe"
+
+# Global mount options  
+ACTION=="add", ENV{mount_options}="relatime"  
+# Filesystem-specific mount options  
+ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs", ENV{mount_options}="%E{mount_options},utf8,gid=100,umask=002"  
+# Mount the device  
+ENV{dir_name}=="SCANNER", ENV{mount_options}="%E{mount_options},ro"
+ACTION=="add", RUN+="/usr/bin/systemd-mount --no-block -o %E{mount_options} /dev/%k /media/%E{dir_name}", RUN+="/bin/sh -c 'echo SCANNER CREATE,ISDIR > /tmp/scannerpipe'"
+# Clean up after removal  
+#ACTION=="remove", ENV{dir_name}!="", RUN+="/bin/umount -l /media/%E{dir_name}", RUN+="/bin/rmdir /media/%E{dir_name}"  
+ACTION=="remove", ENV{dir_name}!="", RUN+="/bin/sh -c 'echo SCANNER DELETE,ISDIR > /tmp/scannerpipe'", RUN+="/usr/bin/systemd-mount --unmount /media/%E{dir_name}", RUN+="/bin/rmdir /media/%E{dir_name}"
+# Exit  
+LABEL="media_by_label_auto_mount_end"
