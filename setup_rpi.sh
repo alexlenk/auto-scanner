@@ -31,6 +31,7 @@ apt-get install -y busybox-syslogd
 apt-get remove -y --purge rsyslog
 
 mkdir /media/STICK
+echo "/dev/sda1        /media/STICK        ext4   defaults         0       0" >> /etc/fstab
 
 if [ "$1" = "ro" ]; then
     sed -i "s/\/boot           vfat    defaults/\/boot           vfat    defaults,ro/g" /etc/fstab
