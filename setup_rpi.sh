@@ -25,13 +25,14 @@ fi
 #cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
 #udevadm control --reload-rules
 
-if [ "$1" = "ro" ]; then
-    apt-get remove -y --purge triggerhappy logrotate dphys-swapfile
-    apt-get autoremove -y --purge
-    echo `cat /boot/cmdline.txt` fastboot noswap ro > /boot/cmdline.txt
-    apt-get install -y busybox-syslogd
-    apt-get remove -y --purge rsyslog
+apt-get remove -y --purge triggerhappy logrotate dphys-swapfile
+apt-get autoremove -y --purge
+apt-get install -y busybox-syslogd
+apt-get remove -y --purge rsyslog
 
+mkdir /media/STICK
+
+if [ "$1" = "ro" ]; then
     sed -i "s/\/boot           vfat    defaults/\/boot           vfat    defaults,ro/g" /etc/fstab
     sed -i "s/\/               ext4    defaults,noatime/\/               ext4    defaults,noatime,ro/g" /etc/fstab
     echo "tmpfs        /tmp            tmpfs   nosuid,nodev         0       0" >> /etc/fstab
@@ -40,15 +41,12 @@ if [ "$1" = "ro" ]; then
     echo "tmpfs        /var/lib/dhcp        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
     echo "tmpfs        /var/lib/dhcpcd5        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
     echo "tmpfs        /var/spool        tmpfs   nosuid,nodev         0       0" >> /etc/fstab
-
-    mkdir /media/STICK
+    echo `cat /boot/cmdline.txt` fastboot noswap ro > /boot/cmdline.txt
+    
     rm -rf /var/lib/dhcp /var/lib/dhcpcd5 /var/spool /etc/resolv.conf
-    #ln -s /tmp /var/lib/dhcp
-    #ln -s /tmp /var/lib/dhcpcd5
-    #ln -s /tmp /var/spool
     touch /tmp/dhcpcd.resolv.conf
     ln -s /tmp/dhcpcd.resolv.conf /etc/resolv.conf
-
+    
     rm /var/lib/systemd/random-seed
     ln -s /tmp/random-seed /var/lib/systemd/random-seed
     sed -i "s/\[Service\]/\[Service\]\nExecStartPre=\/bin\/echo \"\" >\/tmp\/random-seed/g" /lib/systemd/system/systemd-random-seed.service
@@ -62,7 +60,6 @@ if [ "$1" = "ro" ]; then
     alias rw='sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot'
     PROMPT_COMMAND=set_bash_prompt 
 EOL
-
 
     echo "mount -o remount,ro /" >> /etc/bash.bash_logout
     echo "mount -o remount,ro /boot" >> /etc/bash.bash_logout
