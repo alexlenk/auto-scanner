@@ -4,18 +4,11 @@ if [ ! -d /home/pi/auto-scanner ]; then
     echo "First run ..."
     first=true
     ln -s /media /volumes
-    mkfifo /tmp/scannerpipe
-fi
 
-if [ "$first" = "true" ]; then
-    if [ "$1" = "docker" ]; then
-        apt-get update && apt-get upgrade -y && apt-get install -y docker-compose
-    else
-        apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git ghostscript imagemagick
-        git clone https://github.com/alexlenk/auto-scanner.git
-        mkdir /media/STICK
-        echo "/dev/sda1        /media/STICK        ext4   defaults         0       0" >> /etc/fstab
-    fi
+    apt-get update && apt-get upgrade -y && apt-get install -y inotify-tools s-nail psmisc poppler-utils git ghostscript imagemagick
+    git clone https://github.com/alexlenk/auto-scanner.git
+    mkdir /media/STICK
+    echo "/dev/sda1        /media/STICK        ext4   defaults         0       0" >> /etc/fstab
 fi
 
 if [ -d /home/pi/auto-scanner ]; then
@@ -27,12 +20,12 @@ fi
 #cp /home/pi/auto-scanner/11-media-by-label-auto-mount.rules /etc/udev/rules.d/
 #udevadm control --reload-rules
 
-apt-get remove -y --purge triggerhappy logrotate dphys-swapfile
-apt-get autoremove -y --purge
-apt-get install -y busybox-syslogd
-apt-get remove -y --purge rsyslog
-
 if [ "$1" = "ro" ]; then
+    apt-get remove -y --purge triggerhappy logrotate dphys-swapfile
+    apt-get autoremove -y --purge
+    apt-get install -y busybox-syslogd
+    apt-get remove -y --purge rsyslog
+
     sed -i "s/\/boot           vfat    defaults/\/boot           vfat    defaults,ro/g" /etc/fstab
     sed -i "s/\/               ext4    defaults,noatime/\/               ext4    defaults,noatime,ro/g" /etc/fstab
     echo "tmpfs        /tmp            tmpfs   nosuid,nodev         0       0" >> /etc/fstab
