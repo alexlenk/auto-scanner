@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -d "/volumes/STICK" ]; then
+if [ -d "/media/STICK" ]; then
   mount /dev/sda1 /media/STICK
 fi
 
