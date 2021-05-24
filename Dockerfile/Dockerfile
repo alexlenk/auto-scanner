@@ -7,4 +7,4 @@ RUN apt-get install -y inotify-tools s-nail psmisc poppler-utils git ghostscript
 RUN git clone https://github.com/alexlenk/auto-scanner.git
 RUN sed -i "s/<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>/<!--<policy domain=\"coder\" rights=\"none\" pattern=\"PDF\" \/>-->/g" /etc/ImageMagick-6/policy.xml
 
-ENTRYPOINT ["/auto-scanner/run.sh"]
+CMD ["/auto-scanner/run.sh"]
