@@ -19,9 +19,9 @@ ACTION=="add", ENV{mount_options}="relatime"
 ACTION=="add", ENV{ID_FS_TYPE}=="vfat|ntfs", ENV{mount_options}="%E{mount_options},utf8,gid=100,umask=002"  
 # Mount the device  
 ENV{dir_name}=="SCANNER", ENV{mount_options}="%E{mount_options},ro"
-ACTION=="add", RUN+="/usr/bin/systemd-mount --no-block -o %E{mount_options} /dev/%k /media/%E{dir_name}", RUN+="/bin/sh -c 'echo SCANNER CREATE,ISDIR > /tmp/scannerpipe'"
+ACTION=="add", RUN+="/usr/bin/systemd-mount --no-block -o %E{mount_options} /dev/%k /media/%E{dir_name}", RUN+="systemctl restart media-%E{dir_name}.mount"
 # Clean up after removal  
 #ACTION=="remove", ENV{dir_name}!="", RUN+="/bin/umount -l /media/%E{dir_name}", RUN+="/bin/rmdir /media/%E{dir_name}"  
-ACTION=="remove", ENV{dir_name}!="", RUN+="/bin/sh -c 'echo SCANNER DELETE,ISDIR > /tmp/scannerpipe'", RUN+="/usr/bin/systemd-mount --unmount /media/%E{dir_name}", RUN+="/bin/rmdir /media/%E{dir_name}"
+ACTION=="remove", ENV{dir_name}!="", RUN+="/usr/bin/systemd-mount --unmount /media/%E{dir_name}", RUN+="/bin/rmdir /media/%E{dir_name}"
 # Exit  
 LABEL="media_by_label_auto_mount_end"
